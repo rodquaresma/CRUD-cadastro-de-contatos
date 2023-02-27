@@ -8,7 +8,7 @@ namespace ControleDeContatos.Repositorio
         private readonly BancoContext _bancoContext;
         public ContatoRepositorio(BancoContext bancoContext)
         {
-           this._bancoContext = bancoContext;
+            this._bancoContext = bancoContext;
         }
 
         public ContatoModel ListarPorId(int id)
@@ -44,6 +44,20 @@ namespace ControleDeContatos.Repositorio
             _bancoContext.SaveChanges();
 
             return contatoDB;
+        }
+
+        public bool Apagar(int id)
+        {
+            ContatoModel contatoDB = ListarPorId(id);
+
+            if (contatoDB == null)
+            {
+                throw new SystemException("Houve um erro na exclusão do contato!");
+            }
+            _bancoContext.Contatos.Remove(contatoDB);
+            _bancoContext.SaveChanges();
+
+            return true;
         }
     }
 }
